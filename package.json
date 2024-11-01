@@ -1,0 +1,19 @@
+{
+  "name": "restaurant-alerts",
+  "version": "1.0.0",
+  "description": "A real-time WebSocket server for restaurant alerts using Node.js and Express.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "ws": "^8.4.0"
+  },
+  "keywords": ["WebSocket", "ESP32", "Node.js", "Render", "Restaurant Alerts"],
+  "author": "Nishit",
+  "license": "MIT"
+}
