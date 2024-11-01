@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real-Time Alerts</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
+  <div class="container max-w-md mx-auto bg-white shadow-lg rounded-lg p-6">
+    <h1 class="text-2xl font-bold text-center text-blue-500 mb-4">Restaurant Alerts</h1>
+    <div id="alertContainer" class="space-y-4">
+      <!-- Alerts will be displayed here -->
+    </div>
+  </div>
+
+  <script>
+    // Establish WebSocket connection
+    const ws = new WebSocket('ws://localhost:8080');
+
+    ws.onopen = () => {
+      console.log('Connected to WebSocket server');
+    };
+
+    ws.onmessage = (event) => {
+      const message = event.data;
+      displayAlert(message);
+    };
+
+    ws.onclose = () => {
+      console.log('Disconnected from WebSocket server');
+    };
+
+    // Function to display an alert
+    function displayAlert(message) {
+      const alertContainer = document.getElementById('alertContainer');
+      const alertElement = document.createElement('div');
+      alertElement.className = 'p-4 bg-blue-100 border border-blue-300 rounded-lg text-blue-700';
+      alertElement.textContent = `🔔 ${message}`;
+      alertContainer.prepend(alertElement);
+
+      // Optional: Automatically remove alert after a delay
+      setTimeout(() => {
+        alertElement.remove();
+      }, 10000); // Remove after 10 seconds
+    }
+  </script>
+</body>
+</html>
