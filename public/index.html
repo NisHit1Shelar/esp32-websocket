@@ -15,32 +15,48 @@
   </div>
 
   <script>
-    // Connect to WebSocket server hosted on Render
-    const ws = new WebSocket('wss://esp32-websocket.onrender.com');  // Replace with your Render URL
+    const ws = new WebSocket('wss://esp32-websocket.onrender.com'); // Replace with your Render URL
 
     ws.onopen = () => {
       console.log('Connected to WebSocket server');
     };
 
     ws.onmessage = (event) => {
-      const message = event.data;
-      displayAlert(message);
+      const message = JSON.parse(event.data);
+      displayAlert(message.alert, message.timestamp);
     };
 
     ws.onclose = () => {
       console.log('Disconnected from WebSocket server');
     };
 
-    function displayAlert(message) {
+    function displayAlert(message, timestamp) {
       const alertContainer = document.getElementById('alertContainer');
       const alertElement = document.createElement('div');
       alertElement.className = 'p-4 bg-blue-100 border border-blue-300 rounded-lg text-blue-700';
-      alertElement.textContent = `🔔 ${message}`;
+
+      // Calculate "time ago" for the timestamp
+      const timeAgo = timeSince(new Date(timestamp));
+      alertElement.textContent = `🔔 ${message} (${timeAgo} ago)`;
+      
       alertContainer.prepend(alertElement);
 
       setTimeout(() => {
         alertElement.remove();
       }, 10000);  // Remove after 10 seconds
+    }
+
+    // Helper function to calculate "time ago"
+    function timeSince(date) {
+      const seconds = Math.floor((new Date() - date) / 1000);
+      let interval = Math.floor(seconds / 60);
+
+      if (interval > 1) return `${interval} minutes`;
+      if (interval === 1) return '1 minute';
+      
+      interval = Math.floor(seconds);
+      if (interval > 1) return `${interval} seconds`;
+      return '1 second';
     }
   </script>
 </body>
