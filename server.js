@@ -5,10 +5,7 @@ const path = require('path');
 const app = express();
 const PORT = 8080;
 
-// Middleware to parse JSON requests
 app.use(express.json());
-
-// Serve static HTML file for the frontend
 app.use(express.static(path.join(__dirname, 'public')));
 
 const server = app.listen(PORT, () => {
@@ -27,12 +24,19 @@ wss.on('connection', (ws) => {
 
 app.post('/api/alerts', (req, res) => {
   const alertMessage = req.body.alert;
-  console.log('Received alert:', alertMessage);
+  const timestamp = new Date().toISOString(); // ISO timestamp
 
-  // Broadcast the alert to all WebSocket clients
+  const message = {
+    alert: alertMessage,
+    timestamp: timestamp
+  };
+
+  console.log('Received alert:', message);
+
+  // Broadcast the message with timestamp to all WebSocket clients
   wss.clients.forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {
-      client.send(alertMessage);
+      client.send(JSON.stringify(message));
     }
   });
 
