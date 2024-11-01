@@ -16,7 +16,7 @@
 
   <script>
     // Connect to WebSocket server hosted on Render
-    const ws = new WebSocket('wss://esp32-websocket.onrender.com');
+    const ws = new WebSocket('wss://esp32-websocket.onrender.com');  // Replace with your Render URL
 
     ws.onopen = () => {
       console.log('Connected to WebSocket server');
@@ -31,7 +31,6 @@
       console.log('Disconnected from WebSocket server');
     };
 
-    // Function to display an alert
     function displayAlert(message) {
       const alertContainer = document.getElementById('alertContainer');
       const alertElement = document.createElement('div');
@@ -39,10 +38,9 @@
       alertElement.textContent = `🔔 ${message}`;
       alertContainer.prepend(alertElement);
 
-      // Optional: Automatically remove alert after a delay
       setTimeout(() => {
         alertElement.remove();
-      }, 10000); // Remove after 10 seconds
+      }, 10000);  // Remove after 10 seconds
     }
   </script>
 </body>
